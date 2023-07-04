@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,15 @@ Route::post('/register/employee','storeEmployee')->name('store.employee');
 
 Route::controller(DashboardController::class)->group(function () {
 
-    Route::get('/dashboard','index')->name('dashboard')->middleware('auth');
+    Route::get('/dashboard','index')->name('dashboard')->middleware('auth','verified');
+    Route::get('/verify','verify')->name('verification.notice')->middleware('auth');
+    Route::get('/resend/verification/email','resend')->name('resend.email')->middleware('auth');
 });
 
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/login');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 

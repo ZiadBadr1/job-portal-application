@@ -13,7 +13,7 @@
             <div class="col-md-6 ">
                 <div class="card" id="card" style="margin-top:50px;">
                     <div class="card-header">Employer Registration</div>
-                    <form action="{{route('store.employee')}}" method="post" id="">
+                    <form action="#" method="post" id="registrationForm">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -39,14 +39,53 @@
                             </div>
                             <br>
                             <div class="form-group">
-                                <button class="btn btn-primary" id=""> Register</button>
+                                <button class="btn btn-primary" id="btnRegister"> Register</button>
                             </div>
                         </div>
                     </form>
                 </div>
+                <div id="message"></div>
             </div>
         </div>
     </div>
+    <script>
+        var url = "{{route('store.employee')}}";
+        document.getElementById("btnRegister").addEventListener("click", function(event) {
+            var form = document.getElementById("registrationForm");
+            var card = document.getElementById("card");
+            var messageDiv = document.getElementById('message')
+            messageDiv.innerHTML = ''
+            var formData = new FormData(form)
 
+            var button = event.target
+            button.disabled = true;
+            button.innerHTML = 'Sending email.... '
+
+            fetch(url, {
+                method: "POST",
+                headers:{
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                },
+                body: formData
+            }).then(response => {
+                if(response.ok) {
+                    return response.json();
+                }else{
+                    throw new Errror('Error')
+                }
+            }).then(data=> {
+                button.innerHTML = 'Register'
+                button.disabled = false
+                messageDiv.innerHTML = '<div class="alert alert-success">Registration was successful.Please check your email to verify it</div>'
+                card.style.display = 'none'
+            }).catch(error => {
+                button.innerHTML = 'Register'
+                button.disabled = false
+                messageDiv.innerHTML = '<div class="alert alert-danger">Something went wrong. Please try again</div>'
+
+            })
+
+        })
+    </script>
 
 @endsection
