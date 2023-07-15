@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PostJobController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\isEmployer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +23,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::get('/', function () {
     return view('welcome');
 });
+// ---------------------User Routes-------------------------------------------------
 
 Route::controller(UserController::class)->group(function () {
 
@@ -34,13 +39,34 @@ Route::post('/register/employee','storeEmployee')->name('store.employee');
 
 
 });
+// ---------------------Dashboard Routes-------------------------------------------------
 
-Route::controller(DashboardController::class)->group(function () {
+Route::controller(DashboardController::class)->middleware('auth')->group(function () {
 
-    Route::get('/dashboard','index')->name('dashboard')->middleware('auth','verified');
-    Route::get('/verify','verify')->name('verification.notice')->middleware('auth');
-    Route::get('/resend/verification/email','resend')->name('resend.email')->middleware('auth');
+    Route::get('/dashboard','index')->name('dashboard')->middleware('verified');
+    Route::get('/verify','verify')->name('verification.notice');
+    Route::get('/resend/verification/email','resend')->name('resend.email');
 });
+
+
+// ---------------------Subscription Routes-------------------------------------------------
+
+Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer','isSubscribe'])->group(function (){
+
+   Route::get('subscribe' , 'index')->name('subscribe');
+   Route::get('pay/weekly' , 'initiatePayment')->name('pay.weekly');
+   Route::get('pay/monthly' , 'initiatePayment')->name('pay.monthly');
+   Route::get('pay/yearly' , 'initiatePayment')->name('pay.yearly');
+   Route::get('payment/success' , 'paymentSuccess')->name('payment.success');
+   Route::get('payment/cancel' , 'cancel')->name('payment.cancel');
+});
+
+Route::controller(PostJobController::class)->middleware(['auth','isEmployer','isPremiumUser'])->group(function (){
+
+    Route::get('job/create' , 'create')->name('job.create');
+});
+
+
 
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
