@@ -9,20 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PurchaseMail extends Mailable implements ShouldQueue
+class TrailEndNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $plan ;
-    public $billing_ends ;
 
-    public function __construct($plan,$billing_ends)
+    public function __construct(public string $name)
     {
-        $this->plan = $plan;
-        $this->billing_ends = $billing_ends;
+
     }
 
     /**
@@ -31,7 +28,7 @@ class PurchaseMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Purchase confirmation',
+            subject: 'Trail End Notification',
         );
     }
 
@@ -41,7 +38,7 @@ class PurchaseMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.notify',
+            markdown: 'emails.trail',
         );
     }
 
