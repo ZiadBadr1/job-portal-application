@@ -30,7 +30,7 @@ Route::controller(UserController::class)->group(function () {
 Route::get('/register/seeker','createSeeker')->name('create.seeker');
 Route::post('/register/seeker','storeSeeker')->name('store.seeker');
 Route::get('/login','login')->name('login');
-Route::get('/logout','logout')->name('logout');
+Route::post('/logout','logout')->name('logout');
 Route::post('/login','postlogin')->name('login.post');
 
 
@@ -51,7 +51,7 @@ Route::controller(DashboardController::class)->middleware('auth')->group(functio
 
 // ---------------------Subscription Routes-------------------------------------------------
 
-Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer','isSubscribe'])->group(function (){
+Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer'])->group(function (){
 
    Route::get('subscribe' , 'index')->name('subscribe');
    Route::get('pay/weekly' , 'initiatePayment')->name('pay.weekly');

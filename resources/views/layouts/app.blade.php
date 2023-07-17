@@ -23,12 +23,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{route('dashboard')}}">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{route('subscribe')}}">Subscribe</a>
-                </li>
+
                 @if(!auth()->check())
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('login')}}">Login</a>
@@ -43,7 +38,10 @@
                 @if(auth()->check())
                 <li class="nav-item">
                     {{-- Try do this with JS --}}
-                    <a class="nav-link" href="{{route('logout')}}">Logout</a>
+                    <a class="nav-link" id="logout" href="#">Logout</a>
+                    <form id="form-logout" action="{{route('logout')}}" method="post">
+                        @csrf
+                    </form>
                 </li>
                 @endif
             </ul>

@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\PurchaseMail;
 use App\Mail\TrailEndNotification;
 use App\Models\User;
 use Carbon\Carbon;
@@ -32,13 +31,13 @@ class TrailCheck extends Command
     {
         try {
 
-            $users = User::where('user_trial','!=','Null')->get();
+            $users = User::whereNotNull('user_trial')->get();
             $today = Carbon::today('Australia/Melbourne');
             foreach ($users as $user) {
                 $trialEnd = Carbon::parse($user->user_trial);
                 if($trialEnd->isSameDay($today))
                 {
-                    Mail::to($user->email)->send(new PurchaseMail('weekly','dasd'));
+                    Mail::to($user->email)->send(new TrailEndNotification($user->name));
 
                     $this->info('Trial ended email sent to: ' . $user->email);
                 }

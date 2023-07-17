@@ -18,6 +18,12 @@ class SubscriptionController extends Controller
     const MONTHLY_AMOUNT = 80 ;
     const YEARLY_AMOUNT = 200 ;
     const CURRENCY  = 'USD' ;
+
+    public function __construct()
+    {
+        $this->middleware(['isSubscribe'])->except('index');
+    }
+
     public function index()
     {
         return view('Subscription.index');
