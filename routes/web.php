@@ -61,9 +61,14 @@ Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer
    Route::get('payment/cancel' , 'cancel')->name('payment.cancel');
 });
 
-Route::controller(PostJobController::class)->middleware(['auth','isEmployer','isPremiumUser'])->group(function (){
+Route::controller(PostJobController::class)->middleware(['auth','isEmployer'])->group(function (){
 
+    Route::get('job' , 'index')->name('job.index');
     Route::get('job/create' , 'create')->name('job.create');
+    Route::post('job/store' , 'store')->name('job.store');
+    Route::get('job/{listing}/edit' , 'edit')->name('job.edit');
+    Route::put('job/{id}/edit' , 'update')->name('job.update');
+    Route::delete('job/{id}/delete' , 'destroy')->name('job.delete');
 });
 
 
