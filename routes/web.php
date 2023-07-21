@@ -21,21 +21,26 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('home');
 // ---------------------User Routes-------------------------------------------------
 
 Route::controller(UserController::class)->group(function () {
 
-Route::get('/register/seeker','createSeeker')->name('create.seeker');
+Route::get('/register/seeker','createSeeker')->name('create.seeker')->middleware('CheckAuth');
 Route::post('/register/seeker','storeSeeker')->name('store.seeker');
-Route::get('/login','login')->name('login');
+Route::get('/login','login')->name('login')->middleware('CheckAuth');
 Route::post('/logout','logout')->name('logout');
 Route::post('/login','postlogin')->name('login.post');
 
 
-Route::get('/register/employee','createEmployee')->name('create.employee');
+Route::get('/register/employee','createEmployee')->name('create.employee')->middleware('CheckAuth');
 Route::post('/register/employee','storeEmployee')->name('store.employee');
+
+Route::get('/user/profile','profile')->name('user.profile')->middleware('auth');
+Route::post('/user/profile','update')->name('user.update.profile')->middleware('auth');
+Route::post('/user/password','changePassword')->name('user.password')->middleware('auth');
+Route::post('/upload/resume','resume')->name('upload.resume')->middleware('auth');
 
 
 });
@@ -43,7 +48,7 @@ Route::post('/register/employee','storeEmployee')->name('store.employee');
 
 Route::controller(DashboardController::class)->middleware('auth')->group(function () {
 
-    Route::get('/dashboard','index')->name('dashboard')->middleware('verified');
+    Route::get('/dashboard','index')->name('dashboard')->middleware(['verified','isPremiumUser']);
     Route::get('/verify','verify')->name('verification.notice');
     Route::get('/resend/verification/email','resend')->name('resend.email');
 });
@@ -60,6 +65,8 @@ Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer
    Route::get('payment/success' , 'paymentSuccess')->name('payment.success');
    Route::get('payment/cancel' , 'cancel')->name('payment.cancel');
 });
+
+// ---------------------Post Jobs Routes-------------------------------------------------
 
 Route::controller(PostJobController::class)->middleware(['auth','isEmployer'])->group(function (){
 

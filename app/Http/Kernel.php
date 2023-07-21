@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'isEmployer' => \App\Http\Middleware\isEmployer::class,
         'isPremiumUser' => \App\Http\Middleware\isPremiumUser::class,
         'isSubscribe' => \App\Http\Middleware\isSubscribe::class,
+        'CheckAuth' => \App\Http\Middleware\CheckAuth::class,
     ];
 }

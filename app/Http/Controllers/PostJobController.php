@@ -13,7 +13,7 @@ class PostJobController extends Controller
 
     public function __construct()
     {
-        $this->middleware['isPremiumUser']->only(['create','store']);
+        $this->middleware('isPremiumUser')->only(['create','store']);
     }
     public function index()
     {
