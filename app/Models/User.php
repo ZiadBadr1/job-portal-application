@@ -51,5 +51,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-
+    public function listings()
+    {
+        return $this->belongsToMany(Listing::class,'listing_user','user_id','listing_id')
+            ->withPivot(['shortlisted','rejected'])
+            ->withTimestamps();
+    }
 }

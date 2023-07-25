@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostJobController;
 use App\Http\Controllers\SubscriptionController;
@@ -56,7 +57,7 @@ Route::controller(DashboardController::class)->middleware('auth')->group(functio
 
 // ---------------------Subscription Routes-------------------------------------------------
 
-Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer'])->group(function (){
+Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer','verified'])->group(function (){
 
    Route::get('subscribe' , 'index')->name('subscribe');
    Route::get('pay/weekly' , 'initiatePayment')->name('pay.weekly');
@@ -68,7 +69,7 @@ Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer
 
 // ---------------------Post Jobs Routes-------------------------------------------------
 
-Route::controller(PostJobController::class)->middleware(['auth','isEmployer'])->group(function (){
+Route::controller(PostJobController::class)->middleware(['auth','isEmployer','verified'])->group(function (){
 
     Route::get('job' , 'index')->name('job.index');
     Route::get('job/create' , 'create')->name('job.create');
@@ -79,7 +80,17 @@ Route::controller(PostJobController::class)->middleware(['auth','isEmployer'])->
 });
 
 
+// ---------------------Post Jobs Routes------------------------------------------------  -
+Route::controller(ApplicantController::class)->middleware('isEmployer','verified')->group(function (){
 
+    Route::get('applicants' , 'index')->name('applicant.index');
+    Route::get('applicants/show/{listing:slug}' , 'show')->name('applicant.show');
+    Route::post('shortlist/{listingId}/{userId}' , 'shortlist')->name('applicants.shortlist');
+    Route::put('rejected/{listingId}/{userId}' , 'rejected')->name('applicants.rejected');
+
+
+
+});
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
