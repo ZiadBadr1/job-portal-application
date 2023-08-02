@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\PostJobController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
@@ -21,11 +23,23 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-// ---------------------User Routes-------------------------------------------------
+// --------------------- see job from seeker -------------------------------------------------
+Route::controller(JobListingController::class)->group(function () {
+    Route::get('/','index')->name('home');
+    Route::get('/jobs/{listing:slug}','show')->name('job.show');
+    Route::get('/company/{id}','company')->name('company');
 
+
+})->name('home');
+
+// --------------------- see job from seeker -------------------------------------------------
+Route::controller(FileUploadController::class)->group(function () {
+    Route::post('/resume/upload','store')->name('resume.upload');
+})->name('home');
+
+
+
+// ---------------------User Routes-------------------------------------------------
 Route::controller(UserController::class)->group(function () {
 
 Route::get('/register/seeker','createSeeker')->name('create.seeker')->middleware('CheckAuth');
@@ -80,13 +94,14 @@ Route::controller(PostJobController::class)->middleware(['auth','isEmployer','ve
 });
 
 
-// ---------------------Post Jobs Routes------------------------------------------------  -
-Route::controller(ApplicantController::class)->middleware('isEmployer','verified')->group(function (){
+// --------------------- Applicants Routes ------------------------------------------------  -
+Route::controller(ApplicantController::class)->middleware('verified')->group(function (){
 
     Route::get('applicants' , 'index')->name('applicant.index');
     Route::get('applicants/show/{listing:slug}' , 'show')->name('applicant.show');
     Route::post('shortlist/{listingId}/{userId}' , 'shortlist')->name('applicants.shortlist');
     Route::put('rejected/{listingId}/{userId}' , 'rejected')->name('applicants.rejected');
+    Route::post('application/{listingId}/submit' , 'apply')->name('application.submit');
 
 
 

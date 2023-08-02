@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ApplicantController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('isEmployer')->except(['apply']);
+    }
     public function index()
     {
         $listings = Listing::latest()->withCount('users')->where('user_id',auth()->user()->id)->get();
@@ -20,10 +25,10 @@ class ApplicantController extends Controller
     public function show(Listing $listing)
     {
         $this->authorize('view',$listing);
-        if ($listing->user_id != auth()->user()->id)
-        {
-            abort(403);
-        }
+//        if ($listing->user_id != auth()->user()->id)
+//        {
+//            abort(403);
+//        }
         $listings = Listing::with('users')->where('slug',$listing->slug)->first();
 //        dd($listings)
         return view('applicants.show',compact('listings'));
@@ -69,5 +74,11 @@ class ApplicantController extends Controller
         {
             return back();
         }
+    }
+    public function apply($listingId)
+    {
+        $user = auth()->user();
+        $user->listings()->syncWithoutDetaching($listingId);
+        return back()->with('success','Your application was successfully submited');
     }
 }
