@@ -13,7 +13,7 @@ class DashboardController extends Controller
     }
     public function verify()
     {
-        return view('user.verify');
+        return view('verified');
     }
 
     public function resend(Request $request)
