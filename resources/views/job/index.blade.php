@@ -35,8 +35,15 @@
                                 <tr>
                                     <td>{{$job->title}}</td>
                                     <td>{{$job->created_at->format('Y-m-d')}}</td>
-                                    <td><a href="{{route('job.edit',[$job->id])}}">Edit</a></td>
-                                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{$job->id}}">Delete</a>
+                                    <td>
+                                        <a href="{{route('job.edit',[$job->id])}}">
+                                            <button class="btn btn-info">Edit</button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{$job->id}}">
+                                            <button class="btn btn-danger">Delete</button>
+                                        </a>
                                     </td>
                                 </tr>
                                 <!-- Modal -->

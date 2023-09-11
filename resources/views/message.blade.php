@@ -1,6 +1,6 @@
-@if(Session::has('successMessage'))
-    <div class="alert alert-success">{{Session::get('successMessage')}}</div>
+@if(Session::has('success'))
+    <div class="alert alert-success">{{Session::get('success')}}</div>
 @endif
-@if(Session::has('errorMessage'))
-    <div class="alert alert-danger">{{Session::get('errorMessage')}}</div>
+@if(Session::has('error'))
+    <div class="alert alert-danger">{{Session::get('error')}}</div>
 @endif

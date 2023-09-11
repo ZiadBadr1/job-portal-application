@@ -7,54 +7,33 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use function PHPUnit\Framework\isEmpty;
 
 class UserController extends Controller
 {
     const JOB_SEEKER = 'seeker';
     const JOB_POSTER = 'employer';
 
-    public function createSeeker()
+    public function create()
     {
-        return view('user.seeker-register');
+        return view('user.register');
     }
-
-    public function createEmployee()
+    public function store(RegistartionFormRequest $request)
     {
-        return view('user.employer-register');
-    }
 
-    public function storeSeeker(RegistartionFormRequest $request)
-    {
         $user = User::create(
             [
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
-                'user_type' => self::JOB_SEEKER
+                'user_type' => $request->type
             ]
         );
         Auth::login($user);
-        $user->sendEmailVerificationNotification();
-        return response()->json('success');
+//        $user->sendEmailVerificationNotification();
+//        return response()->json('success');
 
-//        return redirect()->route('verification.notice')->with('successMessage','Your account was created');
-    }
-
-    public function storeEmployee(RegistartionFormRequest $request)
-    {
-        $user = User::create(
-            [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password,
-                'user_type' => self::JOB_POSTER,
-                'user_trial' => now()->addWeek(),
-            ]
-        );
-        Auth::login($user);
-        $user->sendEmailVerificationNotification();
-        return response()->json('success');
-//        return redirect()->route('verification.notice')->with('successMessage','Your account was created');
+        return redirect()->route('verification.notice')->with('successMessage','Your account was created');
     }
 
     public function login()
@@ -70,6 +49,10 @@ class UserController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+            if(auth()->user()->email_verified_at==null)
+            {
+                return view('verified');
+            }
             if(auth()->user()->user_type == 'employer') {
                 return redirect()->to('dashboard');
             }
@@ -78,7 +61,7 @@ class UserController extends Controller
                 return redirect()->to('/');
             }
         }
-        return 'Wrong Email or Password !';
+        return redirect()->back()->with('error' , 'Email or password not correct');
     }
 
     public function logout()

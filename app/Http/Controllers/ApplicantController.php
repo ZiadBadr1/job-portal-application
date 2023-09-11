@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Mail\RejectedMail;
 use App\Mail\ShortlistMail;
 use App\Models\Listing;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ApplicantController extends Controller

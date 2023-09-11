@@ -35,27 +35,26 @@ Route::controller(JobListingController::class)->group(function () {
 // --------------------- see job from seeker -------------------------------------------------
 Route::controller(FileUploadController::class)->group(function () {
     Route::post('/resume/upload','store')->name('resume.upload');
-})->name('home');
+});
 
 
 
 // ---------------------User Routes-------------------------------------------------
 Route::controller(UserController::class)->group(function () {
 
-Route::get('/register/seeker','createSeeker')->name('create.seeker')->middleware('CheckAuth');
-Route::post('/register/seeker','storeSeeker')->name('store.seeker');
-Route::get('/login','login')->name('login')->middleware('CheckAuth');
-Route::post('/logout','logout')->name('logout');
-Route::post('/login','postlogin')->name('login.post');
+    Route::get('/register','create')->name('create')->middleware('CheckAuth');
+    Route::post('/register','store')->name('store');
+    Route::get('/login','login')->name('login')->middleware('CheckAuth');
+    Route::post('/logout','logout')->name('logout');
+    Route::post('/login','postlogin')->name('login.post');
 
 
-Route::get('/register/employee','createEmployee')->name('create.employee')->middleware('CheckAuth');
-Route::post('/register/employee','storeEmployee')->name('store.employee');
 
-Route::get('/user/profile','profile')->name('user.profile')->middleware('auth');
-Route::post('/user/profile','update')->name('user.update.profile')->middleware('auth');
-Route::post('/user/password','changePassword')->name('user.password')->middleware('auth');
-Route::post('/upload/resume','resume')->name('upload.resume')->middleware('auth');
+
+    Route::get('/user/profile','profile')->name('user.profile')->middleware('auth');
+    Route::post('/user/profile','update')->name('user.update.profile')->middleware('auth');
+    Route::post('/user/password','changePassword')->name('user.password')->middleware('auth');
+    Route::post('/upload/resume','resume')->name('upload.resume')->middleware('auth');
 
 
 });
@@ -73,12 +72,12 @@ Route::controller(DashboardController::class)->middleware('auth')->group(functio
 
 Route::controller(SubscriptionController::class)->middleware(['auth','isEmployer','verified'])->group(function (){
 
-   Route::get('subscribe' , 'index')->name('subscribe');
-   Route::get('pay/weekly' , 'initiatePayment')->name('pay.weekly');
-   Route::get('pay/monthly' , 'initiatePayment')->name('pay.monthly');
-   Route::get('pay/yearly' , 'initiatePayment')->name('pay.yearly');
-   Route::get('payment/success' , 'paymentSuccess')->name('payment.success');
-   Route::get('payment/cancel' , 'cancel')->name('payment.cancel');
+    Route::get('subscribe' , 'index')->name('subscribe');
+    Route::get('pay/weekly' , 'initiatePayment')->name('pay.weekly');
+    Route::get('pay/monthly' , 'initiatePayment')->name('pay.monthly');
+    Route::get('pay/yearly' , 'initiatePayment')->name('pay.yearly');
+    Route::get('payment/success' , 'paymentSuccess')->name('payment.success');
+    Route::get('payment/cancel' , 'cancel')->name('payment.cancel');
 });
 
 // ---------------------Post Jobs Routes-------------------------------------------------

@@ -18,7 +18,7 @@
                 <form action="{{route('user.update.profile')}}" method="post" enctype="multipart/form-data">@csrf
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="logo">Profile Image</label>
+                            <label for="logo" style="margin-bottom: 5px">Profile Image</label>
                             <input type="file" class="form-control" id="logo" name="profile_pic">
                             @if(auth()->user()->profile_pic)
                                 <img src="{{Storage::url(auth()->user()->profile_pic)}}" width="150" class="mt-3">
@@ -101,9 +101,9 @@
     </div>
 
     <style>
-        .error {
-            color: red;
-            font-weight: bold;
+        .form-group input{
+            margin-top: 7px;
+            margin-bottom: 10px;
         }
     </style>
 @endsection

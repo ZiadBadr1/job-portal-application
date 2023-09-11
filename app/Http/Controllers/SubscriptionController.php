@@ -53,7 +53,7 @@ class SubscriptionController extends Controller
                 'quantity' => 1,
             ],
         ];
-        Stripe::setApiKey(config('services.stripe.secret'));
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
         try {
             $selectPlan = null;
             if($request->is('pay/weekly')) {

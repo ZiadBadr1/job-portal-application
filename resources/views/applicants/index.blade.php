@@ -1,4 +1,6 @@
 @extends('layouts.admin.main')
+
+
 @section('content')
 
     <div class="container mt-5">
@@ -30,8 +32,15 @@
                                     <td>{{$listing->title}}</td>
                                     <td>{{$listing->created_at}}</td>
                                     <td>{{$listing->users_count}}</td>
-                                    <td>View</td>
-                                    <td><a href="{{route('applicant.show',$listing->slug)}}">View</a></td>
+                                    <td>
+                                        <a href="{{route('job.show',[$listing->slug])}}">
+                                            <button class="btn btn-info">Show</button>
+                                        </a>
+                                    </td>                                    <td>
+                                        <a href="{{route('applicant.show',$listing->slug)}}">
+                                            <button class="btn btn-info">View</button>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
