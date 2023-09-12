@@ -27,7 +27,7 @@
                                 <div class="form-group text-center">
                                     <button class="logBtn">Sign in</button>
                                 </div>
-                                <P>Not registered? <a href="{{route('create')}}">Create an account</a></P>
+                                <P>Not registered? <a href="{{route('register')}}">Create an account</a></P>
                             </div>
                         </div>
                     </form>

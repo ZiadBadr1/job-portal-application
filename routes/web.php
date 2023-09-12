@@ -42,7 +42,7 @@ Route::controller(FileUploadController::class)->group(function () {
 // ---------------------User Routes-------------------------------------------------
 Route::controller(UserController::class)->group(function () {
 
-    Route::get('/register','create')->name('create')->middleware('CheckAuth');
+    Route::get('/register','create')->name('register')->middleware('CheckAuth');
     Route::post('/register','store')->name('store');
     Route::get('/login','login')->name('login')->middleware('CheckAuth');
     Route::post('/logout','logout')->name('logout');
