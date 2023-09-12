@@ -9,7 +9,7 @@
 
                 <div class="about">
                     <span class="title">About</span>
-                    <P>{{$company->about}}</P>
+                    <P>{!! $company->about!!}</P>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
             <div class="jobContainer">
 
                 @foreach($company->jobs as $job)
-                    <div class="box">
+                    <div class="box" style="width: 1050px">
                         <div class="innerBox">
                             <h4>{{$job->title}}</h4>
                             <div class="details">
@@ -105,7 +105,7 @@
 
         .innerBox2 {
             margin-top: 12px;
-            margin-left: 60%;
+            margin-left: 55%;
             margin-right: 15px;
         }
 

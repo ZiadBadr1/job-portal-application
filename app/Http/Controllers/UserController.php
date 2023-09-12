@@ -20,17 +20,22 @@ class UserController extends Controller
     }
     public function store(RegistartionFormRequest $request)
     {
-
+        $user_trial = null;
+        if($request->type =='employer')
+        {
+            $user_trial = now()->addWeek();
+        }
         $user = User::create(
             [
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
-                'user_type' => $request->type
+                'user_type' => $request->type,
+                'user_trial' => $user_trial
             ]
         );
         Auth::login($user);
-//        $user->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 //        return response()->json('success');
 
         return redirect()->route('verification.notice')->with('successMessage','Your account was created');

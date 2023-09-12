@@ -33,7 +33,7 @@
                             </div>
                             <div class="radio-group">
                                 <label class="radio-label">Type:</label>
-                                <input type="radio" name="type" id="employee" value="employee">
+                                <input type="radio" name="type" id="employer" value="employer">
                                 <label class="radio-button" for="employer">Employer</label>
                                 <input type="radio" name="type" id="seeker" value="seeker">
                                 <label class="radio-button" for="seeker">Seeker</label>
